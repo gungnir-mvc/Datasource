@@ -1,0 +1,73 @@
+<?php
+namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
+
+use Gungnir\DataSource\Adapter\Database\Table;
+use Gungnir\DataSource\DataSourceOperationInterface;
+
+abstract class AbstractQuery implements QueryInterface, DataSourceOperationInterface
+{
+	/** @var DataSourceDriverAdapterInterface The adapter which is used to communicate with database */
+	private $driver = null;
+
+	/** @var String The generated query string */
+	private $query  = null;
+
+	/** @var Table Main table this operation targets */
+	private $table  = null;
+
+	/** @var Int Any limit which would be applied to the query */
+	private $limit  = null;
+
+	public function driver($driver)
+	{
+		$this->driver = $driver;
+	}
+
+	/**
+	 * Get or set the table which this operation affect
+	 * 
+	 * @param  String|null $table Table name
+	 * @param  String|null $key   Possible table primary key
+	 * 
+	 * @return Table|DataSourceOperationInterface
+	 */
+	public function table(String $table = null, String $key = null)
+	{
+		if ($table) {
+			$this->table = new Table($table, $key);
+			return $this;
+		}
+		return $this->table;
+	}
+
+	/**
+	 * Executes this operation trough driver and returns
+	 * result
+	 * 
+	 * @return Mixed
+	 */
+	public function execute()
+	{
+		$query = $this->getQuery();
+
+		if (strpos($query, 'LIMIT') !== true && is_null($this->limit) === false) {
+			$query .= $this->limit;
+		}
+		return $this->driver->query($query);
+	}
+
+	/**
+	 * Set a limit to how many entries can be retrieved
+	 * or affected by this operation
+	 * 
+	 * @param  Int      $limit [description]
+	 * @param  Int|null $start [description]
+	 * 
+	 * @return DataSourceOperationInterface
+	 */
+	public function limit(Int $limit, Int $start = null)
+	{
+		$this->limit = new Limit($limit, $start);
+		return $this;
+	}
+}
