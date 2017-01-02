@@ -37,4 +37,9 @@ class Mysql extends AbstractDriver
 
 		return $this->config;
 	}
+
+	public function getLastInsertedId()
+	{
+		return $this->connection->lastInsertId();
+	}
 }
