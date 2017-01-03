@@ -2,6 +2,7 @@
 namespace Gungnir\DataSource\Adapter\Database\Driver;
 
 use Gungnir\Core\Config;
+use Gungnir\DataSource\Adapter\Database\Driver\Query\QueryObject;
 
 class Sqlite extends AbstractDriver
 {
@@ -17,14 +18,21 @@ class Sqlite extends AbstractDriver
 		$this->config = $config;
 	}
 
-	public function execute(String $query)
+	public function execute(QueryObject $query)
 	{
 		return $this->connection->exec($query);
 	}
 
-	public function query(String $query)
+	public function query(QueryObject $query)
 	{
 		$sth = $this->connection->prepare($query);
+		foreach ($query->getParameters() AS $key => $value) {
+			if ($key == '?') {
+				$sth->bindValue(str_repeat('s', count($value)), $value);
+			} else {
+				$sth->bindValue($key, $value, \PDO::PARAM_STR);
+			}
+		}
 		$sth->execute();
 		return $sth;
 	}

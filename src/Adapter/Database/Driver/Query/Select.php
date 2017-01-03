@@ -1,94 +1,119 @@
 <?php
 namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
-
-class Select extends Common
+class Common extends AbstractQuery
 {
-	private $fetchMode = null;
-	private $fetchClassName = 'stdClass';
-	private $driver = null;
-	private $select = [];
+	private $joins = [];
+	private $where = [];
+	private $or    = [];
+	private $order = [];
+    private $between = null;
 
-	public function __construct(String $select)
+	public function join(String $table)
 	{
-		$this->select($select);
-	}
-
-	public function select(String $select)
-	{
-		$this->select[] = $select;
+		$this->joins[] = $table;
 		return $this;
 	}
 
-	public function fetch()
+	public function from(String $table)
 	{
-		$result = $this->execute();
-		if (in_array($this->fetchMode, ['class'])) {
-			$result->setFetchMode($this->getFetchMode(), $this->fetchClassName);
-			return ($result) ? $result->fetch() : false;
-		}
-		return ($result) ? $result->fetch($this->getFetchMode()) : false;
+		return $this->table($table);
 	}
 
-	public function fetchAll()
+	public function where(String $column, $value, String $operator = '=')
 	{
-		$result = $this->execute();
-		if (in_array($this->fetchMode, ['class'])) {
-			$result->setFetchMode($this->getFetchMode(), $this->fetchClassName);
-			return ($result) ? $result->fetchAll() : false;
-		}
-		return ($result) ? $result->fetchAll($this->getFetchMode()) : false;
+		$value = (is_string($value)) ? "'" . $value . "'" : $value;
+		$this->where[] = [$column, $operator, $value];
+		return $this;
 	}
 
-	public function getQuery() : String
+    public function between(Int $start, Int $end, String $column = null)
+    {
+        $column = $column ?? rtrim($this->table(), 's') . '_id';
+        $this->between = new Between($start, $end, $column);
+        return $this;
+    }
+
+	public function or(String $key, $value, String $column = null, String $operator = '=')
 	{
-		$query  = new QueryObject;
-		$query->concat("SELECT " . implode(', ', $this->select));
-		$query->concat("FROM ".$this->table());
-		parent::getQuery($query);
+		$column  = $column ?? $key;
+		$value = (is_string($value)) ? "'" . $value . "'" : $value;
+		$this->or[$column] = [$column, $operator, $value];
+		return $this;
+	}
+
+	public function orderBy(String $column, String $type = 'DESC')
+	{
+		$this->order[] = [$column, $type];
+		return $this;
+	}
+
+	public function getQuery(QueryObject $query = null) : QueryObject
+	{
+		$query = $query ?? new QueryObject;
+		$this->addJoins($query)->addBetween($query)->addWhere($query)->addOrder($query);
 		return $query;
 	}
 
-	public function fetchClass(String $classname)
+	public function run()
 	{
-		$this->fetchMode = 'class';
-		$this->fetchClassName = $classname;
-		return $this;
+		return $this->execute($this->getQuery());
 	}
 
-	public function fetchObject()
-	{
-		$this->fetchMode = 'object';
-		return $this;
-	}
+    public function addBetween(QueryObject $query)
+    {
+        if ($this->between) {
+            $query->concat($this->between->getQueryPartString());
+        }
 
-	public function fetchAssoc()
-	{
-		$this->fetchMode = 'assoc';
-		return $this;
-	}
+        return $this;
+    }
 
-	private function getFetchMode()
+	private function addJoins(QueryObject $query)
 	{
-		switch ($this->fetchMode) {
-			case 'named':
-				$mode = \PDO::FETCH_NAMED;
-				break;
-			case 'object':
-				$mode = \PDO::FETCH_OBJ;
-				break;
-			case 'class':
-				$mode = \PDO::FETCH_CLASS;
-				break;
-			case 'array':
-				$mode = \PDO::FETCH_NUM;
-				break;
-			case 'assoc':
-			// Fall through to default
-			default:
-				$mode = \PDO::FETCH_ASSOC;
-				break;
+		foreach ($this->joins as $key => $table) {
+			if (strpos($table, 'ON')) {
+				$query->concat('JOIN ' . $table);
+			} else {
+				$str = "JOIN " . $table .
+			  	" ON " . $this->table() . "." . $this->table()->key() . " = " . $table . "." . $this->table()->key();
+				$query->concat($str);
+			}
 		}
-		return $mode;
+
+		return $this;
 	}
 
+	private function addWhere(QueryObject $query)
+	{
+		foreach ($this->where as $key => $where) {
+			if ($key > 0 || $this->between) {
+				$query->concat("AND " . implode(" ", $where));
+			} else {
+				$query->concat("WHERE " . implode(" ", $where));
+			}
+
+			if (in_array($where[0], array_keys($this->or))) {
+				$query->concat("OR " . implode(" ", $this->or[$where[0]]));
+			}
+		}
+
+		return $this;
+	}
+
+	private function addOrder(QueryObject $query)
+	{
+		if (empty($this->order) === false) {
+			$query->concat('ORDER BY');
+			$queryPart = "";
+			foreach ($this->order as $key => $order) {
+				$queryPart .= implode(' ', $order) . ', ';
+				if ($key == (count($this->order) - 1)) {
+					$queryPart = rtrim($queryPart, ', ');
+				}
+			}
+			$query->concat($queryPart);
+		}
+
+		return $this;
+	}
 }

@@ -50,8 +50,8 @@ abstract class AbstractQuery implements QueryInterface, DataSourceOperationInter
 	{
 		$query = $this->getQuery();
 
-		if (strpos($query, 'LIMIT') !== true && is_null($this->limit) === false) {
-			$query .= $this->limit;
+		if (strpos($query->getString(), 'LIMIT') === false && is_null($this->limit) === false) {
+			$query->concat($this->limit);
 		}
 		return $this->driver->query($query);
 	}

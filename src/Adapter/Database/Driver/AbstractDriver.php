@@ -2,7 +2,7 @@
 namespace Gungnir\DataSource\Adapter\Database\Driver;
 
 use Gungnir\DataSource\Adapter\DataSourceAdapterDriverInterface;
-use Gungnir\DataSource\Adapter\Database\Driver\Query\{Insert, Select, Update, Delete};
+use Gungnir\DataSource\Adapter\Database\Driver\Query\{Insert, Select, Update, Delete, QueryObject};
 
 abstract class AbstractDriver implements DatabaseDriverInterface, DataSourceAdapterDriverInterface 
 {

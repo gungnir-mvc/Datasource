@@ -47,7 +47,7 @@ class Common extends AbstractQuery
 		return $this;
 	}
 
-	public function getQuery(QueryObject $query = null) : String
+	public function getQuery(QueryObject $query = null) : QueryObject
 	{
 		$query = $query ?? new QueryObject;
 		$this->addJoins($query)->addBetween($query)->addWhere($query)->addOrder($query);

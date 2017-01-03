@@ -15,7 +15,7 @@ class Insert extends Common
 	{
 		foreach ($columns as $key => $column) {
 			if (is_string($column)) {
-					$columns[$key] = "`".trim($column,"'`")."`";
+					$columns[$key] = trim($column,"'`");
 			}
 		}
 		$this->columns = $columns;
@@ -26,7 +26,7 @@ class Insert extends Common
 	{
 		foreach ($values as $key => $value) {
 			if (is_string($value)) {
-					$values[$key] = "'".trim($value,"'")."'";
+					$values[$key] = trim($value,"'");
 			}
 		}
 
@@ -35,8 +35,9 @@ class Insert extends Common
 	}
 
 	public function data(Array $data)
-	{
-		if (is_string(array_shift(array_keys($data)))) {
+	{	
+		$keys = array_keys($data);
+		if (is_string(array_shift($keys))) {
 			$this->columns(array_keys($data));
 			$this->values(array_values($data));
 		} else {
@@ -46,17 +47,30 @@ class Insert extends Common
 		return $this;
 	}
 
-	public function getQuery() : String
+	public function getQuery() : QueryObject
 	{
 		$query = new QueryObject;
 		$query->concat('INSERT INTO '.$this->table());
 		
 		if (empty($this->columns) === false) {
-			$query->concat('('.implode(', ', $this->columns).')');
-		}
+			$query->concat('(');
+			$columns = '';
+			foreach($this->columns AS $column) {
 
-		$query->concat('VALUES('.implode(', ', $this->values).')');
-		
+				$columns .= ',`' . $column . '`';
+			}
+			$query->concat(trim($columns, ','));
+			$query->concat(')');
+		}
+		$query->concat('VALUES(');
+		$values = '';
+		foreach ($this->values AS $columnIndex => $columnValue) {
+			$columnAlias = isset($this->columns[$columnIndex]) ? ':' . $this->columns[$columnIndex] : '?';
+			$query->addParameter($columnAlias, $columnValue);
+			$values .= ',' . $columnAlias;
+		}
+		$query->concat(trim($values, ','));
+		$query->concat(')');
 		parent::getQuery($query);
 		return $query;
 	}
