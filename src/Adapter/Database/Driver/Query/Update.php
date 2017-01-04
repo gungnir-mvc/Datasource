@@ -6,7 +6,7 @@ class Update extends Common
 
 	private $set = [];
 
-	public function getQuery() : String
+	public function getQuery() : QueryObject
 	{
 		$query = new QueryObject;
 		$query->concat('UPDATE ' . $this->table());
