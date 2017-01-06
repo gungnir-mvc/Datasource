@@ -6,6 +6,7 @@ class Common extends AbstractQuery
 	private $where = [];
 	private $or    = [];
 	private $order = [];
+	private $group = [];
     private $between = null;
 
 	public function join(String $table)
@@ -17,6 +18,12 @@ class Common extends AbstractQuery
 	public function from(String $table)
 	{
 		return $this->table($table);
+	}
+
+	public function groupBy(String $column)
+	{
+		$this->group[] = $column;
+		return $this;
 	}
 
 	public function where(String $column, $value, String $operator = '=')
@@ -50,7 +57,12 @@ class Common extends AbstractQuery
 	public function getQuery(QueryObject $query = null) : QueryObject
 	{
 		$query = $query ?? new QueryObject;
-		$this->addJoins($query)->addBetween($query)->addWhere($query)->addOrder($query);
+		$this->addJoins($query)
+			 ->addBetween($query)
+			 ->addWhere($query)
+			 ->addGroup($query)
+			 ->addOrder($query);
+
 		return $query;
 	}
 
@@ -108,6 +120,23 @@ class Common extends AbstractQuery
 			foreach ($this->order as $key => $order) {
 				$queryPart .= implode(' ', $order) . ', ';
 				if ($key == (count($this->order) - 1)) {
+					$queryPart = rtrim($queryPart, ', ');
+				}
+			}
+			$query->concat($queryPart);
+		}
+
+		return $this;
+	}
+
+	private function addGroup(QueryObject $query)
+	{
+		if (empty($this->group) === false) {
+			$query->concat('GROUP BY');
+			$queryPart = "";
+			foreach ($this->group as $key => $group) {
+				$queryPart .= $group . ', ';
+				if ($key == (count($this->group) - 1)) {
 					$queryPart = rtrim($queryPart, ', ');
 				}
 			}
