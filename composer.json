@@ -1,25 +1,33 @@
 {
-    "name": "gungnir-mvc/datasource",
-    "description": "Datasource library for gungnir-mvc",
-    "type": "library",
-    "require": {
-        "gungnir-mvc/core": "dev-master"
+  "name": "gungnir-mvc/datasource",
+  "description": "Datasource library for gungnir-mvc",
+  "type": "library",
+  "minimum-stability": "dev",
+  "require": {
+    "php": "~7.1",
+    "gungnir-mvc/core": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "6.2.*",
+    "phpspec/prophecy": "~1.0",
+    "mikey179/vfsStream": "~1.6"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/gungnir-mvc/core.git"
     },
-    "require-dev": {
-                "phpunit/phpunit": "5.5.*",
-                "phpspec/prophecy": "~1.0",
-                "mikey179/vfsStream": "~1.6"
-                },
-        "autoload": {
-        "psr-4": { "Gungnir\\Core\\": "src/" },
-        "exclude-from-classmap": [
-            "/tests/"
-        ]
-    },
-    "repositories": [
-	    {
-	        "type": "vcs",
-	        "url": "https://github.com/gungnir-mvc/core.git"
-	    }
-    ]
+    {
+      "type": "vcs",
+      "url": "https://github.com/gungnir-mvc/event.git"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Gungnir\\DataSource\\": "src/"
+    }
+  },
+  "exclude-from-classmap": [
+    "/tests/"
+  ]
 }
