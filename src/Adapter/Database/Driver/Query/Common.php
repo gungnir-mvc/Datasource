@@ -172,8 +172,8 @@ abstract class Common extends AbstractQuery
         $this->addJoins($query)
             ->addBetween($query)
             ->addWhere($query)
-            ->addHaving($query)
             ->addGroup($query)
+            ->addHaving($query)
             ->addOrder($query);
 
 		return $query;
