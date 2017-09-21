@@ -5,9 +5,11 @@ use Gungnir\DataSource\DataSourceEntity;
 use Gungnir\DataSource\DataSourceEntityCollection;
 use Gungnir\DataSource\DataSourceEntityCollectionInterface;
 use Gungnir\DataSource\DataSourceEntityInterface;
+use Gungnir\DataSource\DataSourceSelectOperationInterface;
 
-class Select extends Common
+class Select extends Common implements DataSourceSelectOperationInterface
 {
+    
     /** @var string */
 	private $fetchMode = null;
 
@@ -28,11 +30,9 @@ class Select extends Common
 	}
 
     /**
-     * @param String $select
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-	public function select(String $select)
+	public function select(String $select): DataSourceSelectOperationInterface
 	{
 		$this->select[] = $select;
 		return $this;
@@ -83,13 +83,9 @@ class Select extends Common
 	}
 
     /**
-     * Retrieval will map data to instances of given class name.
-     *
-     * @param String $className
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-	public function fetchClass(string $className)
+	public function fetchClass(string $className): DataSourceSelectOperationInterface
 	{
 		$this->fetchMode = 'class';
 		$this->fetchClassName = $className;
@@ -97,22 +93,18 @@ class Select extends Common
 	}
 
     /**
-     * Retrieves data as anonymous objects
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-	public function fetchObject()
+	public function fetchObject(): DataSourceSelectOperationInterface
 	{
 		$this->fetchMode = 'object';
 		return $this;
 	}
 
     /**
-     * Sets the retrieval to be of associative type
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-	public function fetchAssoc()
+	public function fetchAssoc(): DataSourceSelectOperationInterface
 	{
 		$this->fetchMode = 'assoc';
 		return $this;
