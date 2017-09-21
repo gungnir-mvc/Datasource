@@ -1,6 +1,8 @@
 <?php
 namespace Gungnir\DataSource\Adapter\Api\Driver\Operation;
 
+use Gungnir\DataSource\DataSourceEntityCollection;
+use Gungnir\DataSource\DataSourceEntityCollectionInterface;
 use Gungnir\DataSource\DataSourceEntityInterface;
 use \Gungnir\DataSource\DataSourceOperationInterface;
 
@@ -29,15 +31,15 @@ class Get implements DataSourceOperationInterface
      */
     public function fetch(): ?DataSourceEntityInterface
     {
-
+        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-	public function fetchAll()
+	public function fetchAll(): DataSourceEntityCollectionInterface
 	{
-
+        return new DataSourceEntityCollection();
 	}
 
 	public function execute()

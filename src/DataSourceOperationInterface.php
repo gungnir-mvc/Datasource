@@ -13,9 +13,9 @@ interface DataSourceOperationInterface
     /**
      * Retrieve all valid entities from data source
      *
-     * @return DataSourceEntityInterface[]
+     * @return DataSourceEntityCollectionInterface
      */
-    public function fetchAll();
+    public function fetchAll(): DataSourceEntityCollectionInterface;
 
 	/**
 	 * Runs the operation and returns the result
