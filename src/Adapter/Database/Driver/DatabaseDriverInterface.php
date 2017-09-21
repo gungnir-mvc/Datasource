@@ -8,6 +8,8 @@ interface DatabaseDriverInterface
 {
 	public function __construct(Config $config);
 
+	public function config(Config $config = null);
+
 	public function execute(QueryObject $query);
 
 	public function query(QueryObject $query);

@@ -6,9 +6,12 @@ class Update extends Common
 
 	private $set = [];
 
-	public function getQuery() : QueryObject
+    /**
+     * {@inheritdoc}
+     */
+	public function getQuery(QueryObject $query = null) : QueryObject
 	{
-		$query = new QueryObject;
+		$query = $query ? $query : new QueryObject;
 		$query->concat('UPDATE ' . $this->table());
 		$this->addSet($query);
 		parent::getQuery($query);

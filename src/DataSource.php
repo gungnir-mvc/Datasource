@@ -8,74 +8,60 @@ use \Gungnir\DataSource\Adapter\DataSourceAdapterInterface;
  */
 class DataSource implements DataSourceInterface
 {
-	/** @var DataSourceAdapter [description] */
+	/** @var DataSourceAdapterInterface */
 	private $adapter = null;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param DataSourceAdapterInterface $adapter
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function __construct(DataSourceAdapterInterface $adapter)
 	{
 		$this->setDataSourceAdapter($adapter);
 	}
 
-	/**
-	 * Set the DataSourceAdapter for this DataSource
-	 * 
-	 * @param DataSourceAdapterInterface $adapter
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function setDataSourceAdapter(DataSourceAdapterInterface $adapter)
 	{
 		$this->adapter = $adapter;
 	}
 
-	/**
-	 * Get the DataSourceDriver for this DataSource
-	 * 
-	 * @return DataSourceAdapterInterface
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function getDataSourceAdapter() : DataSourceAdapterInterface
 	{
 		return $this->adapter;
 	}
 
-	/**
-	 * Returns a select statement object
-	 * 
-	 * @return DataSourceOperation
-	 */
-	public function select(String $select, String $from = null)
+    /**
+     * {@inheritdoc}
+     */
+	public function select(string $select, string $from = null)
 	{
 		return $this->getDataSourceAdapter()->select($select, $from);
 	}
 
-	/**
-	 * Returns an insert statement object
-	 * 
-	 * @return DataSourceOperation
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function insert()
 	{
 		return $this->getDataSourceAdapter()->insert();
 	}
 
-	/**
-	 * Returns an update statement object
-	 * 
-	 * @return DataSourceOperation
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function update()
 	{
 		return $this->getDataSourceAdapter()->update();
 	}
 
-	/**
-	 * Returns a delete statement object
-	 * 
-	 * @return DataSourceOperation
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function delete()
 	{
 		return $this->getDataSourceAdapter()->delete();

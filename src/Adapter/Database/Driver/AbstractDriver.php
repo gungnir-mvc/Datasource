@@ -2,11 +2,20 @@
 namespace Gungnir\DataSource\Adapter\Database\Driver;
 
 use Gungnir\DataSource\Adapter\DataSourceAdapterDriverInterface;
-use Gungnir\DataSource\Adapter\Database\Driver\Query\{Insert, Select, Update, Delete, QueryObject};
+use Gungnir\DataSource\Adapter\Database\Driver\Query\{Insert, Select, Update, Delete};
 
 abstract class AbstractDriver implements DatabaseDriverInterface, DataSourceAdapterDriverInterface 
 {
-	public function select(String $select, String $table = null)
+    /**
+     * If a table name is passed as a second parameter then that table will
+     * be added to the query
+     *
+     * @param String $select
+     * @param String|null $table
+     *
+     * @return Select
+     */
+	public function select(String $select, String $table = null): Select
 	{
 		$select = new Select($select);
 		$select->driver($this);
@@ -16,21 +25,30 @@ abstract class AbstractDriver implements DatabaseDriverInterface, DataSourceAdap
 		return $select;
 	}
 
-	public function delete()
+    /**
+     * @return Delete
+     */
+	public function delete(): Delete
 	{
 		$delete = new Delete;
 		$delete->driver($this);
 		return $delete;
 	}
 
-	public function update()
+    /**
+     * @return Update
+     */
+	public function update(): Update
 	{
 		$update = new Update;
 		$update->driver($this);
 		return $update;
 	}
 
-	public function insert()
+    /**
+     * @return Insert
+     */
+	public function insert(): Insert
 	{
 		$insert = new Insert;
 		$insert->driver($this);

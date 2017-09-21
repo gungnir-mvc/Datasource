@@ -24,31 +24,34 @@ interface DataSourceInterface
 	 */
 	public function getDataSourceAdapter() : DataSourceAdapterInterface;
 
-	/**
-	 * Returns a select statement object
-	 * 
-	 * @return DataSourceOperation
-	 */
-	public function select(String $select, String $from = null);
+    /**
+     * Returns a select statement object
+     *
+     * @param string      $select
+     * @param string|null $from
+     *
+     * @return DataSourceOperationInterface
+     */
+	public function select(string $select, string $from = null);
 
 	/**
 	 * Returns an insert statement object
 	 * 
-	 * @return DataSourceOperation
+	 * @return DataSourceOperationInterface
 	 */
 	public function insert();
 
 	/**
 	 * Returns an update statement object
 	 * 
-	 * @return DataSourceOperation
+	 * @return DataSourceOperationInterface
 	 */
 	public function update();
 
 	/**
 	 * Returns a delete statement object
 	 * 
-	 * @return DataSourceOperation
+	 * @return DataSourceOperationInterface
 	 */
 	public function delete();
 }

@@ -1,31 +1,60 @@
 <?php
 namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
-class Common extends AbstractQuery
+
+use Gungnir\DataSource\DataSourceOperationInterface;
+
+abstract class Common extends AbstractQuery
 {
 	private $joins = [];
 	private $where = [];
 	private $or    = [];
 	private $order = [];
 	private $group = [];
+
+	/** @var Between */
     private $between = null;
 
+    /**
+     * Adds table to be join into query
+     *
+     * @param String $table
+     *
+     * @return $this
+     */
 	public function join(String $table)
 	{
 		$this->joins[] = $table;
 		return $this;
 	}
 
+    /**
+     * Set the target table for primary usage in query
+     *
+     * @param String $table
+     * @return DataSourceOperationInterface
+     */
 	public function from(String $table)
 	{
 		return $this->table($table);
 	}
 
+    /**
+     * @param String $column
+     * @return $this
+     */
 	public function groupBy(String $column)
 	{
 		$this->group[] = $column;
 		return $this;
 	}
 
+    /**
+     * @param String $column   Target column to compare value with
+     * @param mixed  $value    The value to compare column with
+     * @param String $operator Determines which kind of comparison will be made between the values
+     *
+     * @return $this
+     */
 	public function where(String $column, $value, String $operator = '=')
 	{
 		$value = (is_string($value)) ? "'" . $value . "'" : $value;
@@ -33,6 +62,13 @@ class Common extends AbstractQuery
 		return $this;
 	}
 
+    /**
+     * @param Int $start
+     * @param Int $end
+     * @param String|null $column
+     *
+     * @return $this
+     */
     public function between(Int $start, Int $end, String $column = null)
     {
         $column = $column ?? rtrim($this->table(), 's') . '_id';
@@ -40,6 +76,14 @@ class Common extends AbstractQuery
         return $this;
     }
 
+    /**
+     * @param String $key
+     * @param $value
+     * @param String|null $column
+     * @param String $operator
+     *
+     * @return $this
+     */
 	public function or(String $key, $value, String $column = null, String $operator = '=')
 	{
 		$column  = $column ?? $key;
@@ -48,12 +92,23 @@ class Common extends AbstractQuery
 		return $this;
 	}
 
+    /**
+     * Sets the order of things in the universe
+     *
+     * @param String $column
+     * @param String $type
+     *
+     * @return $this
+     */
 	public function orderBy(String $column, String $type = 'DESC')
 	{
 		$this->order[] = [$column, $type];
 		return $this;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getQuery(QueryObject $query = null) : QueryObject
 	{
 		$query = $query ?? new QueryObject;
@@ -66,9 +121,12 @@ class Common extends AbstractQuery
 		return $query;
 	}
 
+    /**
+     * @return mixed
+     */
 	public function run()
 	{
-		return $this->execute($this->getQuery());
+		return $this->execute();
 	}
 
     public function addBetween(QueryObject $query)

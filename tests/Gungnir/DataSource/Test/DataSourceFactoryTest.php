@@ -22,11 +22,11 @@ class DataSourceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function testItCanCreateDatabaseDataSource()
+    public function testItCanCreateDataSourceFromConfig()
     {
         $factory = new DataSourceFactory();
-        $config = new Config(['driver' => 'mysql']);
-        $dataSource = $factory->makeDatabaseDataSource($config);
+        $config = new Config(['type' => 'api']);
+        $dataSource = $factory->makeDataSource($config);
         $this->assertInstanceOf(DataSourceInterface::class, $dataSource);
     }
 }

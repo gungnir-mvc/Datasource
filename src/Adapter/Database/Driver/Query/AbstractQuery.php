@@ -2,15 +2,13 @@
 namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
 
 use Gungnir\DataSource\Adapter\Database\Table;
+use Gungnir\DataSource\Adapter\DataSourceAdapterDriverInterface;
 use Gungnir\DataSource\DataSourceOperationInterface;
 
 abstract class AbstractQuery implements QueryInterface, DataSourceOperationInterface
 {
-	/** @var DataSourceDriverAdapterInterface The adapter which is used to communicate with database */
+	/** @var DataSourceAdapterDriverInterface The adapter which is used to communicate with database */
 	private $driver = null;
-
-	/** @var String The generated query string */
-	private $query  = null;
 
 	/** @var Table Main table this operation targets */
 	private $table  = null;

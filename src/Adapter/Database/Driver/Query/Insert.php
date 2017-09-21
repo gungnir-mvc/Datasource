@@ -47,9 +47,12 @@ class Insert extends Common
 		return $this;
 	}
 
-	public function getQuery() : QueryObject
+    /**
+     * {@inheritdoc}
+     */
+	public function getQuery(QueryObject $query = null) : QueryObject
 	{
-		$query = new QueryObject;
+		$query = $query ? $query : new QueryObject;
 		$query->concat('INSERT INTO '.$this->table());
 		
 		if (empty($this->columns) === false) {

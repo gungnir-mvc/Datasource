@@ -12,12 +12,15 @@ class QueryObject
 
 	public function getString()
 	{
-		return $this->queryString;
+		return trim($this->queryString, " ");
 	}
 
-	public function concat(String $string) 
+	public function concat(String $string)
 	{
-		$this->queryString .= " " . trim($string, " ") . " ";
+        if (!empty($this->queryString) && $this->queryString[(strlen($this->queryString)-1)] !== " ") {
+            $this->queryString .= " ";
+        }
+		$this->queryString .= trim($string, " ") . " ";
 		return $this;
 	}
 

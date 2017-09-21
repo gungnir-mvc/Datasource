@@ -9,7 +9,7 @@ use \Gungnir\DataSource\Adapter\Database\DatabaseDriverFactory;
 class DataSourceFactory
 {
 	/**
-	 * Creates a intance of datasource which uses database
+	 * Creates a instance of data source which uses database
 	 * as adapter which get driver based on passed config.
 	 * 	
 	 * @param  Config $config Configuration to build data source from
