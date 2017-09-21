@@ -49,7 +49,7 @@ class DataSourceEntityCollection implements DataSourceEntityCollectionInterface
     }
 
     /**
-     * @return array
+     * @inheritDoc
      */
     public function entities(): array
     {
@@ -57,7 +57,19 @@ class DataSourceEntityCollection implements DataSourceEntityCollectionInterface
     }
 
     /**
-     * @return int
+     * @inheritDoc
+     */
+    public function exposedEntities(): array
+    {
+        $exposed = [];
+        foreach ($this->entities() AS $entity) {
+            $exposed[] = $entity->expose();
+        }
+        return $exposed;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function count()
     {

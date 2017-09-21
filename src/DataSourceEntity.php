@@ -17,6 +17,14 @@ class DataSourceEntity implements DataSourceEntityInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function expose()
+    {
+        return $this->data;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function offsetExists($offset)

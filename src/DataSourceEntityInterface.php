@@ -7,4 +7,12 @@ namespace Gungnir\DataSource;
  *
  * @package Gungnir\DataSource
  */
-interface DataSourceEntityInterface extends \ArrayAccess {}
+interface DataSourceEntityInterface extends \ArrayAccess
+{
+    /**
+     * Returns underlying data
+     *
+     * @return mixed
+     */
+    public function expose();
+}

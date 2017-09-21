@@ -9,7 +9,7 @@ use Gungnir\DataSource\DataSourceSelectOperationInterface;
 
 class Select extends Common implements DataSourceSelectOperationInterface
 {
-    
+
     /** @var string */
 	private $fetchMode = null;
 

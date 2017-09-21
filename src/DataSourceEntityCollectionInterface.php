@@ -26,7 +26,12 @@ interface DataSourceEntityCollectionInterface extends \Countable, \IteratorAggre
     public function entity(string $key): ?DataSourceEntityInterface;
 
     /**
-     * @return array
+     * @return DataSourceEntityInterface[]
      */
     public function entities(): array;
+
+    /**
+     * @return array
+     */
+    public function exposedEntities(): array;
 }
