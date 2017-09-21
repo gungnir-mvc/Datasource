@@ -5,11 +5,13 @@ use Gungnir\DataSource\DataSourceOperationInterface;
 
 abstract class Common extends AbstractQuery
 {
-	private $joins = [];
-	private $where = [];
-	private $or    = [];
-	private $order = [];
-	private $group = [];
+    private $joins        = [];
+    private $where        = [];
+    private $having       = [];
+    private $matchAgainst = [];
+    private $or           = [];
+    private $order        = [];
+    private $group        = [];
 
 	/** @var Between */
     private $between = null;
@@ -47,6 +49,61 @@ abstract class Common extends AbstractQuery
 		$this->group[] = $column;
 		return $this;
 	}
+
+    /**
+     * @param string $column
+     * @param $value
+     * @param string|null $operator
+     * @return $this
+     */
+    public function having(string $column, $value, string $operator = null)
+    {
+        $operator = $operator ?? '=';
+
+        if (is_string($value)) {
+            $value = "'" . $value . "'";
+        } elseif (is_array($value)) {
+            $value = "(" . implode(',', $value) . ")";
+        }
+        $this->having[] = [$column, $operator, $value];
+        return $this;
+    }
+
+    /**
+     * @param $columns
+     * @param $values
+     * @param String|null $operator
+     * @param String|null $mode
+     *
+     * @return $this
+     */
+    public function matchAgainst($columns, $values, String $operator = NULL, String $mode = NULL)
+    {
+        $operator = $operator ?? 'AGAINST';
+
+        if (is_string($columns)) {
+            $columns = '(' . $columns . ')';
+        } elseif (is_array($columns)) {
+            $columns = '(' . implode(", ", $columns) . ')';
+        }
+
+        if (is_string($values)) {
+            $values = "('" . $values . "' ";
+            $values .= (string) $mode;
+            $values .= ")";
+
+        } elseif (is_array($values)) {
+            $values = "('" . implode(" ", $values) . "' ";
+            $values .= (string) $mode;
+            $values .= ")";
+        }
+
+        $this->matchAgainst[] = [
+            $columns,
+            $operator,
+            $values];
+        return $this;
+    }
 
     /**
      * @param String $column   Target column to compare value with
@@ -111,12 +168,13 @@ abstract class Common extends AbstractQuery
      */
 	public function getQuery(QueryObject $query = null) : QueryObject
 	{
-		$query = $query ?? new QueryObject;
-		$this->addJoins($query)
-			 ->addBetween($query)
-			 ->addWhere($query)
-			 ->addGroup($query)
-			 ->addOrder($query);
+        $query = $query ?? new QueryObject;
+        $this->addJoins($query)
+            ->addBetween($query)
+            ->addWhere($query)
+            ->addHaving($query)
+            ->addGroup($query)
+            ->addOrder($query);
 
 		return $query;
 	}
@@ -170,6 +228,35 @@ abstract class Common extends AbstractQuery
 		return $this;
 	}
 
+    /**
+     * @param QueryObject $query
+     * @return $this
+     */
+    private function addHaving(QueryObject $query)
+    {
+        foreach ($this->having as $key => $having) {
+            if ($key > 0 || $this->between) {
+                $query->concat("AND " . implode(" ", $having));
+            } else {
+                $query->concat("HAVING " . implode(" ", $having));
+            }
+        }
+
+        return $this;
+    }
+    /**
+    public function addMatchAgainst(QueryObject $query)
+    {
+        foreach($this->matchAgainst AS $key => $matchAgainst) {
+
+        }
+        return $this;
+    }
+**/
+    /**
+     * @param QueryObject $query
+     * @return $this
+     */
 	private function addOrder(QueryObject $query)
 	{
 		if (empty($this->order) === false) {
