@@ -1,7 +1,7 @@
 <?php
 namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
 
-interface QueryPart
+interface QueryPartInterface
 {
     public function getQueryPartString() : String;
 }

@@ -2,7 +2,7 @@
 namespace Gungnir\DataSource\Adapter\Database\Driver;
 
 use Gungnir\DataSource\Adapter\DataSourceAdapterDriverInterface;
-use Gungnir\DataSource\Adapter\Database\Driver\Query\{Insert, Select, Update, Delete};
+use Gungnir\DataSource\Adapter\Database\Driver\Query\{Create, Select, Update, Delete};
 
 abstract class AbstractDriver implements DatabaseDriverInterface, DataSourceAdapterDriverInterface 
 {
@@ -46,11 +46,11 @@ abstract class AbstractDriver implements DatabaseDriverInterface, DataSourceAdap
 	}
 
     /**
-     * @return Insert
+     * @return Create
      */
-	public function insert(): Insert
+	public function insert(): Create
 	{
-		$insert = new Insert;
+		$insert = new Create;
 		$insert->driver($this);
 		return $insert;
 	}

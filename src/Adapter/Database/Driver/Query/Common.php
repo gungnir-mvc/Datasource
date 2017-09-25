@@ -1,8 +1,6 @@
 <?php
 namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
 
-use Gungnir\DataSource\DataSourceOperationInterface;
-
 abstract class Common extends AbstractQuery
 {
     private $joins        = [];
@@ -19,11 +17,11 @@ abstract class Common extends AbstractQuery
     /**
      * Adds table to be join into query
      *
-     * @param String $table
+     * @param string $table
      *
-     * @return $this
+     * @return self
      */
-	public function join(String $table)
+	public function join(string $table)
 	{
 		$this->joins[] = $table;
 		return $this;
@@ -33,7 +31,7 @@ abstract class Common extends AbstractQuery
      * Set the target table for primary usage in query
      *
      * @param String $table
-     * @return DataSourceOperationInterface
+     * @return self
      */
 	public function from(String $table)
 	{

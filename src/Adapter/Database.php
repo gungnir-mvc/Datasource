@@ -2,7 +2,10 @@
 namespace Gungnir\DataSource\Adapter;
 
 use Gungnir\DataSource\Adapter\Database\Driver\DatabaseDriverInterface;
-use Gungnir\DataSource\DataSourceOperationInterface;
+use Gungnir\DataSource\Operation\DataSourceDeleteOperationInterface;
+use Gungnir\DataSource\Operation\DataSourceInsertOperationInterface;
+use Gungnir\DataSource\Operation\DataSourceSelectOperationInterface;
+use Gungnir\DataSource\Operation\DataSourceUpdateOperationInterface;
 
 class Database implements DataSourceAdapterInterface
 {
@@ -89,7 +92,7 @@ class Database implements DataSourceAdapterInterface
 	 * @param  String      $string 
 	 * @param  String|null $table  
 	 * 
-	 * @return DataSourceOperationInterface
+	 * @return DataSourceSelectOperationInterface
 	 */
 	public function select(String $string, String $table = null)
 	{
@@ -99,7 +102,7 @@ class Database implements DataSourceAdapterInterface
 	/**
 	 * Builds and returns an insert operation object
 	 * 
-	 * @return DataSourceOperationInterface
+	 * @return DataSourceInsertOperationInterface
 	 */
 	public function insert()
 	{
@@ -109,7 +112,7 @@ class Database implements DataSourceAdapterInterface
 	/**
 	 * Builds and returns a delete operation object
 	 * 
-	 * @return DataSourceOperationInterface
+	 * @return DataSourceDeleteOperationInterface
 	 */
 	public function delete()
 	{
@@ -119,7 +122,7 @@ class Database implements DataSourceAdapterInterface
 	/**
 	 * Builds and returns an update operation object
 	 * 
-	 * @return DataSourceOperationInterface
+	 * @return DataSourceUpdateOperationInterface
 	 */
 	public function update()
 	{

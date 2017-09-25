@@ -1,16 +1,27 @@
 <?php
 namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
-class Insert extends Common 
+use Gungnir\DataSource\Operation\DataSourceInsertOperationInterface;
+
+class Create extends Common implements DataSourceInsertOperationInterface
 {
+    /** @var string[] */
 	private $columns = array();
+
+	/** @var mixed[] */
 	private $values  = array();
 
-	public function into(String $table)
+    /**
+     * {@inheritdoc}
+     */
+	public function into(string $target)
 	{
-		$this->table($table);
+		$this->table($target);
 		return $this;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function columns(Array $columns)
 	{
 		foreach ($columns as $key => $column) {
@@ -22,6 +33,9 @@ class Insert extends Common
 		return $this;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function values(Array $values)
 	{
 		foreach ($values as $key => $value) {
@@ -34,6 +48,9 @@ class Insert extends Common
 		return $this;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function data(Array $data)
 	{	
 		$keys = array_keys($data);
@@ -78,8 +95,11 @@ class Insert extends Common
 		return $query;
 	}
 
+    /**
+     * @return mixed
+     */
 	public function run()
 	{
-		return parent::execute($this->getQuery());
+		return $this->execute();
 	}
 }

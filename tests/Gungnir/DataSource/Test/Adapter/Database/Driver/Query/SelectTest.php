@@ -3,7 +3,6 @@ namespace Gungnir\DataSource\Test\Adapter\Database\Driver\Query;
 
 use Gungnir\DataSource\Adapter\Database\Driver\DatabaseDriverInterface;
 use Gungnir\DataSource\Adapter\Database\Driver\Query\Select;
-use Gungnir\DataSource\Adapter\DataSourceAdapterDriverInterface;
 use Gungnir\DataSource\DataSourceEntityCollectionInterface;
 use Gungnir\DataSource\DataSourceEntityInterface;
 use PHPUnit\Framework\TestCase;

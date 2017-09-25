@@ -27,7 +27,7 @@ class DataSourceFactory
 	}
 
 	 /**
-	 * Creates a intance of datasource which uses api
+	 * Creates a instance of datasource which uses api
 	 * as adapter which get driver based on passed config.
 	 * 	
 	 * @param  Config $config Configuration to build data source from

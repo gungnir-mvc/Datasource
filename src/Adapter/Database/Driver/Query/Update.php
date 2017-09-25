@@ -1,23 +1,15 @@
 <?php
 namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
 
-class Update extends Common 
-{
+use Gungnir\DataSource\Operation\DataSourceUpdateOperationInterface;
 
+class Update extends Common implements DataSourceUpdateOperationInterface
+{
 	private $set = [];
 
     /**
      * {@inheritdoc}
      */
-	public function getQuery(QueryObject $query = null) : QueryObject
-	{
-		$query = $query ? $query : new QueryObject;
-		$query->concat('UPDATE ' . $this->table());
-		$this->addSet($query);
-		parent::getQuery($query);
-		return $query;
-	}
-
 	public function set(String  $key, $value)
 	{
 		if (is_string($value)) {
@@ -27,6 +19,23 @@ class Update extends Common
 		return $this;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getQuery(QueryObject $query = null) : QueryObject
+    {
+        $query = $query ? $query : new QueryObject;
+        $query->concat('UPDATE ' . $this->table());
+        $this->addSet($query);
+        parent::getQuery($query);
+        return $query;
+    }
+
+    /**
+     * Adds set parts to the query object
+     *
+     * @param QueryObject $query
+     */
 	private function addSet(QueryObject $query)
 	{
 		$counter = 0;

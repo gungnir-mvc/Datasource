@@ -2,6 +2,7 @@
 namespace Gungnir\DataSource;
 
 use \Gungnir\DataSource\Adapter\DataSourceAdapterInterface;
+use \Gungnir\DataSource\Operation\DataSourceOperationInterface;
 
 /**
  * Interface for any kind of data source.

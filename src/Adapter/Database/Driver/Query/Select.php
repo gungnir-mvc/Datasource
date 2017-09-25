@@ -5,11 +5,10 @@ use Gungnir\DataSource\DataSourceEntity;
 use Gungnir\DataSource\DataSourceEntityCollection;
 use Gungnir\DataSource\DataSourceEntityCollectionInterface;
 use Gungnir\DataSource\DataSourceEntityInterface;
-use Gungnir\DataSource\DataSourceSelectOperationInterface;
+use Gungnir\DataSource\Operation\DataSourceSelectOperationInterface;
 
 class Select extends Common implements DataSourceSelectOperationInterface
 {
-
     /** @var string */
 	private $fetchMode = null;
 

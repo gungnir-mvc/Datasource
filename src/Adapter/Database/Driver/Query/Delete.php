@@ -1,7 +1,9 @@
 <?php
 namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
 
-class Delete extends Common 
+use Gungnir\DataSource\Operation\DataSourceDeleteOperationInterface;
+
+class Delete extends Common  implements DataSourceDeleteOperationInterface
 {
     /**
      * {@inheritdoc}

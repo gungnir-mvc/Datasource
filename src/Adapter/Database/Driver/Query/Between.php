@@ -1,7 +1,7 @@
 <?php
 namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
 
-class Between implements QueryPart
+class Between implements QueryPartInterface
 {
     const STRING_KEY = 'BETWEEN';
 

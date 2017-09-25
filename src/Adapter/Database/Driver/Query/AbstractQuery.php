@@ -3,9 +3,8 @@ namespace Gungnir\DataSource\Adapter\Database\Driver\Query;
 
 use Gungnir\DataSource\Adapter\Database\Table;
 use Gungnir\DataSource\Adapter\DataSourceAdapterDriverInterface;
-use Gungnir\DataSource\DataSourceOperationInterface;
 
-abstract class AbstractQuery implements QueryInterface, DataSourceOperationInterface
+abstract class AbstractQuery implements QueryInterface
 {
 	/** @var DataSourceAdapterDriverInterface The adapter which is used to communicate with database */
 	private $driver = null;
@@ -27,7 +26,7 @@ abstract class AbstractQuery implements QueryInterface, DataSourceOperationInter
 	 * @param  String|null $table Table name
 	 * @param  String|null $key   Possible table primary key
 	 * 
-	 * @return Table|DataSourceOperationInterface
+	 * @return self|Table
 	 */
 	public function table(String $table = null, String $key = null)
 	{
@@ -61,7 +60,7 @@ abstract class AbstractQuery implements QueryInterface, DataSourceOperationInter
 	 * @param  Int      $limit [description]
 	 * @param  Int|null $start [description]
 	 * 
-	 * @return DataSourceOperationInterface
+	 * @return self
 	 */
 	public function limit(Int $limit, Int $start = null)
 	{
