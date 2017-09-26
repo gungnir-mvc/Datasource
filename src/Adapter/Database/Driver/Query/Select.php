@@ -45,9 +45,9 @@ class Select extends Common implements DataSourceSelectOperationInterface
 		$queryResult = $this->execute();
 		if (in_array($this->fetchMode, ['class'])) {
 			$queryResult->setFetchMode($this->getFetchMode(), $this->fetchClassName);
-			return ($queryResult) ? $queryResult->fetch() : null;
+			return (!is_null($queryResult)) ? new DataSourceEntity($queryResult->fetch()) : null;
 		}
-		$data = ($queryResult) ? $queryResult->fetch($this->getFetchMode()) : null;
+		$data = (!is_null($queryResult)) ? $queryResult->fetch($this->getFetchMode()) : null;
 		return ($data) ? new DataSourceEntity($data) : $data;
 	}
 
@@ -59,9 +59,14 @@ class Select extends Common implements DataSourceSelectOperationInterface
 		$queryResult = $this->execute();
 		if (in_array($this->fetchMode, ['class'])) {
 			$queryResult->setFetchMode($this->getFetchMode(), $this->fetchClassName);
-			return ($queryResult) ? $queryResult->fetchAll() : [];
+			$collection = new DataSourceEntityCollection();
+			if ($queryResult) {
+			    foreach ($queryResult->fetchAll() as $row) {
+			        $collection->push(new DataSourceEntity($row));
+                }
+            }
+			return $collection;
 		}
-
         $queryData = ($queryResult) ? $queryResult->fetchAll($this->getFetchMode()) : [];
 		$result = new DataSourceEntityCollection();
         foreach ($queryData AS $data) $result->push(new DataSourceEntity($data));
