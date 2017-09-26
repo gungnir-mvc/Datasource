@@ -48,7 +48,7 @@ class Select extends Common implements DataSourceSelectOperationInterface
 			return (!is_null($queryResult)) ? new DataSourceEntity($queryResult->fetch()) : null;
 		}
 		$data = (!is_null($queryResult)) ? $queryResult->fetch($this->getFetchMode()) : null;
-		return ($data) ? new DataSourceEntity($data) : $data;
+		return ($data) ? new DataSourceEntity($data) : null;
 	}
 
     /**
