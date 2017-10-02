@@ -1,7 +1,6 @@
 <?php
 namespace Gungnir\DataSource\Adapter;
 
-use Gungnir\DataSource\Adapter\Database\Driver\DatabaseDriverInterface;
 use Gungnir\DataSource\Operation\DataSourceDeleteOperationInterface;
 use Gungnir\DataSource\Operation\DataSourceInsertOperationInterface;
 use Gungnir\DataSource\Operation\DataSourceSelectOperationInterface;
@@ -9,7 +8,7 @@ use Gungnir\DataSource\Operation\DataSourceUpdateOperationInterface;
 
 class Database implements DataSourceAdapterInterface
 {
-	/** @var DatabaseDriverInterface The current database driver used */
+	/** @var DataSourceAdapterDriverInterface The current database driver used */
 	private $driver = null;
 
 	/** @var Database[] All instances of database connections existing currently */
@@ -18,9 +17,9 @@ class Database implements DataSourceAdapterInterface
 	/**
 	 * Constructor
 	 * 
-	 * @param DatabaseDriverInterface $driver The desired driver to use
+	 * @param DataSourceAdapterDriverInterface $driver The desired driver to use
 	 */
-	public function __construct(DatabaseDriverInterface $driver)
+	public function __construct(DataSourceAdapterDriverInterface $driver)
 	{
 		$this->setDataSourceAdapterDriver($driver);
 		self::$instances[$driver->config()->parent] = $this;

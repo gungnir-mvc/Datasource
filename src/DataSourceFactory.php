@@ -26,22 +26,6 @@ class DataSourceFactory
 		return $dataSource;
 	}
 
-	 /**
-	 * Creates a instance of datasource which uses api
-	 * as adapter which get driver based on passed config.
-	 * 	
-	 * @param  Config $config Configuration to build data source from
-	 * 
-	 * @wip
-	 * 
-	 * @return DataSourceInterface
-	 */
-	public function makeApiDataSource(Config $config) : DataSourceInterface 
-	{
-		$driver = new Rest;
-		return new DataSource(new Api($driver));
-	}
-
 	/**
 	 * Determine type of data source from config and then
 	 * makes it.
@@ -52,15 +36,6 @@ class DataSourceFactory
 	 */
 	public function makeDataSource(Config $config) : DataSourceInterface
 	{
-		switch ($config->get('type')) {
-			case 'api':
-				$dataSource = $this->makeApiDataSource($config);
-				break;
-			default:
-				$dataSource = $this->makeDatabaseDataSource($config);
-				break;
-		}
-
-		return $dataSource;
+        return $this->makeDatabaseDataSource($config);
 	}
 }
