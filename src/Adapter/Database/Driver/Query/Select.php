@@ -115,6 +115,87 @@ class Select extends Common implements DataSourceSelectOperationInterface
 	}
 
     /**
+     * {@inheritdoc}
+     */
+    public function groupBy(string $column)
+    {
+        parent::groupBy($column);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function orderBy(string $column, string $type = 'DESC')
+    {
+        parent::orderBy($column, $type);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function join(string $table)
+    {
+        parent::join($table);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function from(string $table)
+    {
+        parent::from($table);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function having(string $column, $value, string $operator = null)
+    {
+        parent::having($column, $value, $operator);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function matchAgainst($columns, $values, string $operator = null, string $mode = null)
+    {
+        parent::matchAgainst($columns, $values, $operator, $mode);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function where(string $column, $value, string $operator = '=')
+    {
+        parent::where($column, $value, $operator);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function between(Int $start, Int $end, string $column = null)
+    {
+        parent::between($start, $end, $column);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function or (string $key, $value, string $column = null, string $operator = '=')
+    {
+        parent::or($key, $value, $column, $operator);
+        return $this;
+    }
+
+    /**
      * Translates string representation of fetching modes and returns
      * the PDO integer representation of it.
      *
@@ -122,28 +203,27 @@ class Select extends Common implements DataSourceSelectOperationInterface
      *
      * @return int
      */
-	private function getFetchMode()
-	{
-		switch ($this->fetchMode) {
-			case 'named':
-				$mode = \PDO::FETCH_NAMED;
-				break;
-			case 'object':
-				$mode = \PDO::FETCH_OBJ;
-				break;
-			case 'class':
-				$mode = \PDO::FETCH_CLASS;
-				break;
-			case 'array':
-				$mode = \PDO::FETCH_NUM;
-				break;
-			case 'assoc':
-			// Fall through to default
-			default:
-				$mode = \PDO::FETCH_ASSOC;
-				break;
-		}
-		return $mode;
-	}
-
+    private function getFetchMode()
+    {
+        switch ($this->fetchMode) {
+            case 'named':
+                $mode = \PDO::FETCH_NAMED;
+                break;
+            case 'object':
+                $mode = \PDO::FETCH_OBJ;
+                break;
+            case 'class':
+                $mode = \PDO::FETCH_CLASS;
+                break;
+            case 'array':
+                $mode = \PDO::FETCH_NUM;
+                break;
+            case 'assoc':
+                // Fall through to default
+            default:
+                $mode = \PDO::FETCH_ASSOC;
+                break;
+        }
+        return $mode;
+    }
 }

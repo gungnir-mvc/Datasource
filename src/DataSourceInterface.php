@@ -2,7 +2,10 @@
 namespace Gungnir\DataSource;
 
 use \Gungnir\DataSource\Adapter\DataSourceAdapterInterface;
-use \Gungnir\DataSource\Operation\DataSourceOperationInterface;
+use Gungnir\DataSource\Operation\DataSourceDeleteOperationInterface;
+use Gungnir\DataSource\Operation\DataSourceInsertOperationInterface;
+use Gungnir\DataSource\Operation\DataSourceSelectOperationInterface;
+use Gungnir\DataSource\Operation\DataSourceUpdateOperationInterface;
 
 /**
  * Interface for any kind of data source.
@@ -31,28 +34,28 @@ interface DataSourceInterface
      * @param string      $select
      * @param string|null $from
      *
-     * @return DataSourceOperationInterface
+     * @return DataSourceSelectOperationInterface
      */
 	public function select(string $select, string $from = null);
 
 	/**
 	 * Returns an insert statement object
 	 * 
-	 * @return DataSourceOperationInterface
+	 * @return DataSourceInsertOperationInterface
 	 */
 	public function insert();
 
 	/**
 	 * Returns an update statement object
 	 * 
-	 * @return DataSourceOperationInterface
+	 * @return DataSourceUpdateOperationInterface
 	 */
 	public function update();
 
 	/**
 	 * Returns a delete statement object
 	 * 
-	 * @return DataSourceOperationInterface
+	 * @return DataSourceDeleteOperationInterface
 	 */
 	public function delete();
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Gungnir\DataSource\Operation;
 
-interface DataSourceInsertOperationInterface extends DataSourceCommonOperationInterface
+interface DataSourceInsertOperationInterface
 {
     /**
      * Determines which target to insert into
