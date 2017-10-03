@@ -1,0 +1,43 @@
+<?php
+namespace Gungnir\DataSource\Driver\Database;
+
+use Gungnir\Core\Config;
+use Gungnir\DataSource\Driver\Database\Query\QueryObject;
+
+interface DatabaseDriverInterface 
+{
+    /**
+     * DatabaseDriverInterface constructor.
+     *
+     * @param Config $config
+     */
+	public function __construct(Config $config);
+
+    /**
+     * Get or set the database configuration
+     *
+     * @param Config|null $config
+     *
+     * @return mixed
+     */
+	public function config(Config $config = null);
+
+    /**
+     * Executes a query towards the database
+     *
+     * @param QueryObject $query
+     *
+     * @return mixed
+     */
+	public function execute(QueryObject $query);
+
+    /**
+     * Executes a query towards the database
+     *
+     * @param QueryObject $query
+     *
+     * @return mixed
+     */
+	public function query(QueryObject $query);
+
+}

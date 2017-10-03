@@ -1,10 +1,12 @@
 <?php
 namespace Gungnir\DataSource\Adapter;
 
-use Gungnir\DataSource\Operation\DataSourceDeleteOperationInterface;
-use Gungnir\DataSource\Operation\DataSourceInsertOperationInterface;
-use Gungnir\DataSource\Operation\DataSourceSelectOperationInterface;
-use Gungnir\DataSource\Operation\DataSourceUpdateOperationInterface;
+use Gungnir\DataSource\Operation\{
+    DataSourceDeleteOperationInterface,
+    DataSourceInsertOperationInterface,
+    DataSourceSelectOperationInterface,
+    DataSourceUpdateOperationInterface
+};
 
 interface DataSourceAdapterInterface
 {

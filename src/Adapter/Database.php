@@ -22,7 +22,7 @@ class Database implements DataSourceAdapterInterface
 	public function __construct(DataSourceAdapterDriverInterface $driver)
 	{
 		$this->setDataSourceAdapterDriver($driver);
-		self::$instances[$driver->config()->parent] = $this;
+		self::$instances[$driver->config()->get('parent')] = $this;
 	}
 
 	/**

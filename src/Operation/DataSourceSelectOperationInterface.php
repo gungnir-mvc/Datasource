@@ -1,8 +1,8 @@
 <?php
 namespace Gungnir\DataSource\Operation;
 
-use Gungnir\DataSource\DataSourceEntityCollectionInterface;
-use Gungnir\DataSource\DataSourceEntityInterface;
+use Gungnir\DataSource\Entity\DataSourceEntityCollectionInterface;
+use Gungnir\DataSource\Entity\DataSourceEntityInterface;
 
 interface DataSourceSelectOperationInterface
 {
