@@ -16,7 +16,7 @@ interface DataSourceAdapterDriverInterface
      *
      * @return Config
      */
-    public function config(Config $config = null): ?Config;
+    public function config(Config $config = null);
 
     /**
      * Returns a select statement object
