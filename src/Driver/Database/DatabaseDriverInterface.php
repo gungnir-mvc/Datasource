@@ -3,6 +3,7 @@ namespace Gungnir\DataSource\Driver\Database;
 
 use Gungnir\Core\Config;
 use Gungnir\DataSource\Driver\Database\Query\QueryObject;
+use Gungnir\DataSource\Factory\ConnectionFactory;
 
 interface DatabaseDriverInterface 
 {
@@ -10,8 +11,9 @@ interface DatabaseDriverInterface
      * DatabaseDriverInterface constructor.
      *
      * @param Config $config
+     * @param ConnectionFactory $connectionFactory
      */
-	public function __construct(Config $config);
+	public function __construct(Config $config, ConnectionFactory $connectionFactory);
 
     /**
      * Get or set the database configuration

@@ -40,7 +40,7 @@ class DatabaseDriverFactory
 	 */
 	public function makeSqliteDriver(Config $config)
 	{
-		return new Sqlite($config);
+		return new Sqlite($config, new ConnectionFactory());
 	}
 
 	/**
@@ -53,6 +53,6 @@ class DatabaseDriverFactory
 	 */
 	public function makeMysqlDriver(Config $config)
 	{
-		return new Mysql($config);
+		return new Mysql($config, new ConnectionFactory());
 	}
 }

@@ -3,6 +3,7 @@ namespace Gungnir\DataSource\Driver\Database;
 
 use Gungnir\Core\Config as Config;
 use Gungnir\DataSource\Driver\Database\Query\QueryObject;
+use Gungnir\DataSource\Factory\ConnectionFactory;
 
 class Mysql extends AbstractDriver 
 {
@@ -18,15 +19,17 @@ class Mysql extends AbstractDriver
      * Mysql constructor.
      *
      * @param Config $config
+     * @param ConnectionFactory $connectionFactory
      */
-	public function __construct(Config $config)
+	public function __construct(Config $config, ConnectionFactory $connectionFactory)
 	{
 		$dsn = sprintf(self::CONNECTION_STRING,
             $config->get('hostname'),
             $config->get('database'),
             $config->get('port')
         );
-		$this->connection = new \PDO(
+
+		$this->connection = $connectionFactory->makePdoConnection(
 		    $dsn,
             $config->get('username'),
             $config->get('password'),
@@ -34,6 +37,7 @@ class Mysql extends AbstractDriver
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
             ]
         );
+
 		$this->config = $config;
 	}
 
