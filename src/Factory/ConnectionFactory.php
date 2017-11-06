@@ -21,8 +21,8 @@ class ConnectionFactory
         $configuration = [$dsn];
 
         if ($username) $configuration[] = $username;
-        if ($password) $password[]      = $password;
-        if ($options) $configuration[]  = $options;
+        if ($password) $configuration[] = $password;
+        if ($options)  $configuration[] = $options;
 
         return new \PDO(...$configuration);
     }
