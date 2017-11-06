@@ -3,6 +3,7 @@ namespace Gungnir\DataSource\Driver\Database;
 
 use Gungnir\Core\Config;
 use Gungnir\DataSource\Driver\Database\Query\QueryObject;
+use Gungnir\DataSource\Factory\ConnectionFactory;
 
 class Sqlite extends AbstractDriver
 {
@@ -12,17 +13,31 @@ class Sqlite extends AbstractDriver
 	/** @var \PDO */
 	private $connection = null;
 
-	public function __construct(Config $config)
+    /**
+     * Sqlite constructor.
+     *
+     * @param Config $config
+     * @param ConnectionFactory $connectionFactory
+     */
+	public function __construct(Config $config, ConnectionFactory $connectionFactory)
 	{
-		$this->connection = new \PDO('sqlite:' . $config->get("database") . '.db');
+		$this->connection = $connectionFactory->makePdoConnection('sqlite:' . $config->get("database") . '.db');
 		$this->config = $config;
 	}
 
+    /**
+     * @param QueryObject $query
+     * @return mixed|\PDOStatement
+     */
 	public function execute(QueryObject $query)
 	{
-		return $this->connection->exec($query);
+		return $this->query($query);
 	}
 
+    /**
+     * @param QueryObject $query
+     * @return \PDOStatement
+     */
 	public function query(QueryObject $query)
 	{
 		$sth = $this->connection->prepare($query);
