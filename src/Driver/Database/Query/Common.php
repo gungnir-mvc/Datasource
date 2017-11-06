@@ -209,20 +209,37 @@ abstract class Common extends AbstractQuery
 		return $this;
 	}
 
+    /**
+     * Applies all "where" entries and will convert to "and" where
+     * necessary. Any "or" added will be paired and logically with column which
+     * it shares name with. Any left over "or" will be appended at the end.
+     */
 	private function addWhere(QueryObject $query)
 	{
+        /**
+         * Create a local copy to play with since we dont want to hurt our current state
+         */
+        $or = $this->or;
+
 		foreach ($this->where as $key => $where) {
-			if ($key > 0 || $this->between) {
-				$query->concat("AND " . implode(" ", $where));
-			} else {
-				$query->concat("WHERE " . implode(" ", $where));
-			}
 
-			if (in_array($where[0], array_keys($this->or))) {
-				$query->concat("OR " . implode(" ", $this->or[$where[0]]));
-			}
+            $orString = in_array($where[0], array_keys($or)) ? " OR " . implode(" ", $or[$where[0]]) : null;
+            $startWord = $key > 0 || $this->between ? 'AND' : 'WHERE';
+            
+            if ($orString) {
+                unset($or[$where[0]]);
+            }
+
+            if ($orString) {
+                $query->concat($startWord . " (" . implode(" ", $where) . $orString . ")");
+            } else {
+                $query->concat($startWord . " " . implode(" ", $where));
+            }
+			
 		}
-
+        foreach ($or as $key => $orItem) {
+            $query->concat(" OR " . implode(" ", $orItem));
+        }
 		return $this;
 	}
 
@@ -242,15 +259,7 @@ abstract class Common extends AbstractQuery
 
         return $this;
     }
-    /**
-    public function addMatchAgainst(QueryObject $query)
-    {
-        foreach($this->matchAgainst AS $key => $matchAgainst) {
 
-        }
-        return $this;
-    }
-**/
     /**
      * @param QueryObject $query
      * @return $this

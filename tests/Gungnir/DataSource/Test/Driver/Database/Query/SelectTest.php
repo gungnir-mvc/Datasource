@@ -26,6 +26,25 @@ class SelectTest extends TestCase
     /**
      * @test
      */
+    public function testItCanGenerateQueryStringWithWhereAndOr()
+    {
+        $expectedQuery = "SELECT * FROM test_table WHERE (name = 'testname' OR name = 'testname2') AND (id > 0 OR id = -1) AND admin = 1 OR mega_admin = 1";
+        $select = new Select('*');
+        $select->from('test_table');
+        $select->where('name', 'testname');
+        $select->or('name', 'testname2');
+        $select->where('id', 0, '>');
+        $select->or('id', -1);
+        $select->where('admin', 1);
+        $select->or('mega_admin', 1);
+        $query = $select->getQuery();
+
+        $this->assertEquals($expectedQuery, $query->getString());   
+    }
+
+    /**
+     * @test
+     */
     public function testItReturnsEntity()
     {
         $driver = $this->getMockBuilder(DatabaseDriverInterface::class)

@@ -11,7 +11,7 @@ class UpdateTest extends TestCase
      */
     public function testItCanGenerateQueryString()
     {
-        $expectedQuery = "UPDATE table SET value=:value WHERE id = 1 AND name = 'test' OR name = 'test1'";
+        $expectedQuery = "UPDATE table SET value=:value WHERE id = 1 AND (name = 'test' OR name = 'test1')";
         $operation = new Update();
 
         $operation
